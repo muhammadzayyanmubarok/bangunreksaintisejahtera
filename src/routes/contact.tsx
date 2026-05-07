@@ -25,7 +25,7 @@ function ContactPage() {
       <section className="container-page py-24">
         <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr]">
           <div className="space-y-6">
-            <ContactItem icon={Mail} title="Email" value="hello@baris.co.id" />
+            <ContactItem icon={Mail} title="Email" value="bangunreksaintisejahtera@gmail.com" href="mailto:bangunreksaintisejahtera@gmail.com" />
             <ContactItem icon={Phone} title="Telepon" value="+62 21 0000 0000" />
             <ContactItem icon={MapPin} title="Kantor" value="Jakarta, Indonesia" />
             <div className="rounded-3xl bg-[var(--color-beige)] p-8">
