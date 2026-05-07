@@ -72,14 +72,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "Bangun Reksa Inti Sejahtera" },
+      { name: "description", content: "BARIS offers modern B2B business solutions, showcasing services and capabilities to attract clients." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "Bangun Reksa Inti Sejahtera" },
+      { property: "og:description", content: "BARIS offers modern B2B business solutions, showcasing services and capabilities to attract clients." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Bangun Reksa Inti Sejahtera" },
+      { name: "twitter:description", content: "BARIS offers modern B2B business solutions, showcasing services and capabilities to attract clients." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9788cd51-af1d-4409-b25a-c43380b30005/id-preview-64174d68--390ec2bd-3566-4a7c-a499-57ca877c65db.lovable.app-1778157812593.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9788cd51-af1d-4409-b25a-c43380b30005/id-preview-64174d68--390ec2bd-3566-4a7c-a499-57ca877c65db.lovable.app-1778157812593.png" },
     ],
     links: [
       {
