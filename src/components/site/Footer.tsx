@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Logo } from "./Logo";
-import { Linkedin, Instagram, Twitter, Mail, MapPin, Phone } from "lucide-react";
+import { Linkedin, Mail, MapPin, Phone } from "lucide-react";
 
 export function Footer() {
   return (
@@ -13,11 +13,15 @@ export function Footer() {
               Mitra strategis bagi perusahaan dalam menghadirkan solusi bisnis yang inovatif, terukur, dan berdampak.
             </p>
             <div className="flex gap-3">
-              {[Linkedin, Instagram, Twitter].map((Icon, i) => (
-                <a key={i} href="#" className="flex h-10 w-10 items-center justify-center rounded-full border border-primary-foreground/20 hover:bg-accent hover:text-accent-foreground hover:border-transparent transition-colors">
-                  <Icon className="h-4 w-4" />
-                </a>
-              ))}
+              <a
+                href="https://www.linkedin.com/in/pt-bangun-reksa-inti-sejahtera-brs-18ab363a5/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn BRS"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-primary-foreground/20 hover:bg-accent hover:text-accent-foreground hover:border-transparent transition-colors"
+              >
+                <Linkedin className="h-4 w-4" />
+              </a>
             </div>
           </div>
 
@@ -40,7 +44,7 @@ export function Footer() {
             <h4 className="mb-5 font-display text-sm font-semibold uppercase tracking-widest text-accent">Kontak</h4>
             <ul className="space-y-3 text-sm text-primary-foreground/80">
               <li className="flex gap-3"><MapPin className="h-4 w-4 mt-0.5 shrink-0 text-accent" /> Jakarta, Indonesia</li>
-              <li className="flex gap-3"><Mail className="h-4 w-4 mt-0.5 shrink-0 text-accent" /> hello@baris.co.id</li>
+              <li className="flex gap-3"><Mail className="h-4 w-4 mt-0.5 shrink-0 text-accent" /><a href="mailto:bangunreksaintisejahtera@gmail.com" className="hover:text-primary-foreground break-all">bangunreksaintisejahtera@gmail.com</a></li>
               <li className="flex gap-3"><Phone className="h-4 w-4 mt-0.5 shrink-0 text-accent" /> +62 21 0000 0000</li>
             </ul>
           </div>

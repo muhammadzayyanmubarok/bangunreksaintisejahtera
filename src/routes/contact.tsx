@@ -25,7 +25,7 @@ function ContactPage() {
       <section className="container-page py-24">
         <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr]">
           <div className="space-y-6">
-            <ContactItem icon={Mail} title="Email" value="hello@baris.co.id" />
+            <ContactItem icon={Mail} title="Email" value="bangunreksaintisejahtera@gmail.com" href="mailto:bangunreksaintisejahtera@gmail.com" />
             <ContactItem icon={Phone} title="Telepon" value="+62 21 0000 0000" />
             <ContactItem icon={MapPin} title="Kantor" value="Jakarta, Indonesia" />
             <div className="rounded-3xl bg-[var(--color-beige)] p-8">
@@ -59,15 +59,19 @@ function ContactPage() {
   );
 }
 
-function ContactItem({ icon: Icon, title, value }: { icon: any; title: string; value: string }) {
+function ContactItem({ icon: Icon, title, value, href }: { icon: any; title: string; value: string; href?: string }) {
   return (
     <div className="flex gap-4">
       <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground">
         <Icon className="h-5 w-5" />
       </div>
-      <div>
+      <div className="min-w-0">
         <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{title}</p>
-        <p className="mt-1 font-display text-lg font-semibold">{value}</p>
+        {href ? (
+          <a href={href} className="mt-1 block font-display text-lg font-semibold break-all hover:text-primary">{value}</a>
+        ) : (
+          <p className="mt-1 font-display text-lg font-semibold">{value}</p>
+        )}
       </div>
     </div>
   );
