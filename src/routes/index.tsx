@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell, CTASection } from "@/components/site/PageShell";
 import { SERVICES, CLIENTS, SUCCESS_STORIES, INSIGHTS } from "@/data/site";
-import { ArrowRight, Sparkles, Target, Workflow, ShieldCheck, ArrowUpRight } from "lucide-react";
+import { ArrowRight, Sparkles, Target, Workflow, ShieldCheck, ArrowUpRight, Check } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -134,31 +134,44 @@ function ServicesOverview() {
       <div className="grid gap-10 lg:grid-cols-[1fr_2fr] lg:items-end mb-14">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-primary">Layanan Kami</p>
-          <h2 className="mt-3 font-display text-4xl font-bold md:text-5xl">Empat pilar untuk pertumbuhan bisnis Anda.</h2>
+          <h2 className="mt-3 font-display text-4xl font-bold md:text-5xl">Tiga pilar untuk akselerasi bisnis Anda.</h2>
         </div>
         <p className="text-lg text-muted-foreground max-w-xl lg:justify-self-end">
-          Kami menggabungkan teknologi, strategi, dan eksekusi untuk menghadirkan dampak nyata bagi perusahaan modern.
+          Culture Transformation, Talent, dan Solution — dirancang untuk membantu perusahaan bertumbuh, beradaptasi, dan berinovasi.
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-3">
         {SERVICES.map((s) => (
-          <Link
+          <article
             key={s.slug}
-            to={`/services/${s.slug}` as any}
-            className="group relative overflow-hidden rounded-3xl border border-border bg-card p-8 transition-all hover:-translate-y-1 hover:shadow-elegant"
+            className="group relative flex flex-col overflow-hidden rounded-3xl border border-border bg-card p-8 transition-all hover:-translate-y-1 hover:shadow-elegant"
           >
             <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-secondary/20 blur-2xl opacity-0 transition-opacity group-hover:opacity-100" />
-            <div className="relative flex items-start justify-between">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
-                <s.icon className="h-6 w-6" />
-              </div>
-              <ArrowUpRight className="h-5 w-5 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-primary" />
+            <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
+              <s.icon className="h-6 w-6" />
             </div>
-            <p className="mt-8 text-xs font-semibold uppercase tracking-[0.2em] text-primary">{s.tagline}</p>
-            <h3 className="mt-2 font-display text-2xl font-bold">{s.title}</h3>
-            <p className="mt-3 text-muted-foreground">{s.short}</p>
-          </Link>
+            <p className="relative mt-8 text-xs font-semibold uppercase tracking-[0.2em] text-primary">{s.tagline}</p>
+            <h3 className="relative mt-2 font-display text-2xl font-bold">{s.title}</h3>
+            <p className="relative mt-3 text-muted-foreground">{s.short}</p>
+            <ul className="relative mt-6 space-y-2">
+              {s.capabilities.slice(0, 4).map((c: string) => (
+                <li key={c} className="flex items-start gap-2 text-sm text-foreground/80">
+                  <Check className="h-4 w-4 shrink-0 text-primary mt-0.5" />
+                  <span>{c}</span>
+                </li>
+              ))}
+              {s.capabilities.length > 4 && (
+                <li className="pl-6 text-xs text-muted-foreground">+{s.capabilities.length - 4} lainnya</li>
+              )}
+            </ul>
+            <Link
+              to={`/services/${s.slug}` as any}
+              className="relative mt-8 inline-flex items-center gap-2 self-start rounded-full border border-primary px-4 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+            >
+              Explore More <ArrowUpRight className="h-4 w-4" />
+            </Link>
+          </article>
         ))}
       </div>
     </section>
@@ -184,33 +197,19 @@ function SuccessStorySection() {
             <article key={s.slug} className={`group flex flex-col rounded-3xl p-8 transition-all hover:-translate-y-1 ${i===0 ? "bg-primary text-primary-foreground" : "bg-card border border-border hover:shadow-elegant"}`}>
               <p className={`text-xs font-semibold uppercase tracking-[0.2em] ${i===0 ? "text-accent" : "text-primary"}`}>{s.industry}</p>
               <h3 className="mt-2 font-display text-2xl font-bold">{s.client}</h3>
-              <div className="mt-6 space-y-4 text-sm">
-                <Detail label="Tantangan" value={s.challenge} dark={i===0} />
-                <Detail label="Solusi BARIS" value={s.solution} dark={i===0} />
-                <Detail label="Dampak" value={s.impact} dark={i===0} />
-              </div>
-              <div className={`mt-8 grid grid-cols-3 gap-2 border-t pt-5 ${i===0 ? "border-primary-foreground/15" : "border-border"}`}>
-                {s.metrics.map(m => (
-                  <div key={m.l}>
-                    <div className={`font-display text-xl font-bold ${i===0 ? "text-accent" : "text-primary"}`}>{m.v}</div>
-                    <div className={`mt-0.5 text-[10px] ${i===0 ? "text-primary-foreground/60" : "text-muted-foreground"}`}>{m.l}</div>
-                  </div>
-                ))}
-              </div>
+              <p className={`mt-1 text-sm font-medium ${i===0 ? "text-primary-foreground/80" : "text-muted-foreground"}`}>{s.project}</p>
+              <p className={`mt-5 text-base ${i===0 ? "text-primary-foreground/90" : "text-foreground"}`}>{s.highlight}</p>
+              <Link
+                to="/success-story"
+                className={`mt-auto pt-8 inline-flex items-center gap-2 text-sm font-semibold ${i===0 ? "text-accent" : "text-primary"}`}
+              >
+                Selengkapnya <ArrowRight className="h-4 w-4" />
+              </Link>
             </article>
           ))}
         </div>
       </div>
     </section>
-  );
-}
-
-function Detail({ label, value, dark }: { label: string; value: string; dark?: boolean }) {
-  return (
-    <div>
-      <p className={`text-[10px] font-semibold uppercase tracking-widest ${dark ? "text-primary-foreground/50" : "text-muted-foreground"}`}>{label}</p>
-      <p className={`mt-1 ${dark ? "text-primary-foreground/90" : "text-foreground"}`}>{value}</p>
-    </div>
   );
 }
 
