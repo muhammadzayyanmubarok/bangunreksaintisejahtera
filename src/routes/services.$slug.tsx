@@ -44,7 +44,7 @@ function ServiceDetail() {
         <div className="grid gap-16 lg:grid-cols-[1.1fr_1fr] lg:gap-24 items-start">
           <div className="space-y-5">
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-primary">Tentang Layanan</p>
-            {service.opening.map((p) => (
+            {service.opening.map((p: string) => (
               <p key={p} className="text-lg text-muted-foreground leading-relaxed">{p}</p>
             ))}
           </div>
@@ -52,7 +52,7 @@ function ServiceDetail() {
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-primary">Capabilities</p>
             <h3 className="mt-3 font-display text-2xl font-bold">Cakupan layanan.</h3>
             <ul className="mt-6 space-y-3">
-              {service.capabilities.map((c) => (
+              {service.capabilities.map((c: string) => (
                 <li key={c} className="flex gap-3">
                   <CheckCircle2 className="h-5 w-5 shrink-0 text-primary mt-0.5" />
                   <span className="font-medium">{c}</span>
@@ -70,7 +70,7 @@ function ServiceDetail() {
             <h2 className="mt-3 font-display text-3xl font-bold md:text-4xl">Apa yang kami kerjakan.</h2>
           </div>
           <div className="grid gap-6 md:grid-cols-2">
-            {service.details.map((d, i) => (
+            {service.details.map((d: { title: string; desc: string }, i: number) => (
               <div key={d.title} className="rounded-2xl border border-border bg-card p-8 hover:shadow-elegant transition-shadow">
                 <div className="font-display text-sm font-bold text-accent">0{i + 1}</div>
                 <h3 className="mt-3 font-display text-xl font-bold">{d.title}</h3>
