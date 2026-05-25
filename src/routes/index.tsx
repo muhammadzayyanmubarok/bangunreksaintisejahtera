@@ -7,7 +7,7 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "BARIS — Mitra Strategis Solusi Bisnis B2B" },
-      { name: "description", content: "BARIS menghadirkan solusi bisnis terintegrasi: software house, advisory, event organizer, dan procurement untuk perusahaan Indonesia." },
+      { name: "description", content: "BARIS menghadirkan solusi teknologi dan digital untuk membantu perusahaan meningkatkan efisiensi, memperkuat operasional, dan mempercepat transformasi bisnis." },
       { property: "og:title", content: "BARIS — Mitra Strategis Solusi Bisnis B2B" },
       { property: "og:description", content: "Solusi bisnis B2B yang inovatif, strategis, dan berdampak." },
     ],
@@ -45,8 +45,7 @@ function Hero() {
             Membangun bisnis masa depan, <span className="text-accent">bersama BARIS.</span>
           </h1>
           <p className="mt-6 max-w-xl text-lg text-primary-foreground/75">
-            Kami adalah mitra strategis perusahaan dalam menghadirkan solusi yang inovatif,
-            terukur, dan berdampak — dari teknologi, strategi, hingga eksekusi.
+            BARIS menghadirkan solusi teknologi dan digital yang dirancang untuk membantu perusahaan meningkatkan efisiensi, memperkuat operasional, dan mempercepat transformasi bisnis. Mulai dari artificial intelligence hingga cloud infrastructure, kami membantu organisasi membangun fondasi digital yang aman, modern, dan scalable.
           </p>
           <div className="mt-10 flex flex-wrap gap-3">
             <Link to="/services" className="group inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-semibold text-accent-foreground shadow-soft transition-transform hover:-translate-y-0.5">
