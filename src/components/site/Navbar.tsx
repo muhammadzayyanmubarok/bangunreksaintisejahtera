@@ -4,10 +4,9 @@ import { Logo } from "./Logo";
 import { ChevronDown, Menu, X } from "lucide-react";
 
 const services = [
-  { to: "/services/software-house", label: "Software House" },
-  { to: "/services/advisory", label: "Advisory Services" },
-  { to: "/services/event-organizer", label: "Event Organizer" },
-  { to: "/services/procurement", label: "Procurement / Pengadaan" },
+  { to: "/services/culture-transformation", label: "Culture Transformation" },
+  { to: "/services/talent", label: "Talent" },
+  { to: "/services/solution", label: "Solution" },
 ] as const;
 
 const navItems = [
