@@ -1,7 +1,13 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "tanstack-start-app",
+  "name": "baris",
   "compatibility_date": "2025-09-24",
   "compatibility_flags": ["nodejs_compat"],
   "main": "src/server.ts",
+  "kv_namespaces": [
+    {
+      "binding": "CONTENT",
+      "id": "a5699d2f91bf4347a8fe44da17e7262e",
+    },
+  ],
 }

@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const Route = createFileRoute("/admin")({
   component: AdminPanel,
@@ -35,207 +35,238 @@ type Insight = {
   excerpt: string;
 };
 
+type SiteContent = {
+  services: Service[];
+  stories: SuccessStory[];
+  insights: Insight[];
+  clients: string[];
+};
+
 // ── Initial Data ───────────────────────────────────────────────────────────
-const INITIAL_SERVICES: Service[] = [
-  {
-    slug: "culture-transformation",
-    title: "Culture Transformation",
-    tagline: "Budaya inovasi & pertumbuhan",
-    short:
-      "Membangun budaya inovasi yang mendorong organisasi bertumbuh, beradaptasi, dan terus berkembang.",
-    capabilities: [
-      "Innovation Workshop",
-      "In-house Innovation Lab",
-      "Training & Certification",
-      "Corporate Event & Activation",
-    ],
-    opening: [
-      "Culture Transformation membantu perusahaan membangun budaya kerja yang lebih adaptif, kolaboratif, dan inovatif.",
-      "Melalui pendekatan strategis dan implementatif, BARIS mendampingi organisasi dalam menciptakan perubahan budaya secara nyata.",
-    ],
-    details: [
-      {
-        title: "Innovation Workshop",
-        desc: "Fasilitasi workshop inovasi untuk membantu tim mengidentifikasi tantangan bisnis dan menghasilkan solusi yang actionable.",
-      },
-      {
-        title: "In-house Innovation Lab",
-        desc: "Membangun ekosistem inovasi internal sebagai wadah pengembangan ide dan percepatan inovasi.",
-      },
-      {
-        title: "Training & Certification",
-        desc: "Program pengembangan kompetensi untuk mendukung transformasi organisasi.",
-      },
-      {
-        title: "Corporate Event & Activation",
-        desc: "Perencanaan event korporasi yang memperkuat engagement dan budaya perusahaan.",
-      },
-    ],
-  },
-  {
-    slug: "talent",
-    title: "Talent",
-    tagline: "Pengembangan & penyelarasan talenta",
-    short:
-      "Membantu perusahaan mengembangkan dan menyelaraskan talenta untuk mendukung transformasi bisnis.",
-    capabilities: [
-      "Talent Scouting & Mapping",
-      "End-to-End Talent Solutions",
-      "Performance Alignment",
-    ],
-    opening: [
-      "Talent BARIS menghadirkan solusi pengelolaan talenta secara end-to-end.",
-      "Mulai dari talent mapping hingga performance alignment, kami membantu memastikan setiap talenta berkembang selaras strategi perusahaan.",
-    ],
-    details: [
-      {
-        title: "Talent Scouting & Mapping",
-        desc: "Identifikasi dan pemetaan talenta berdasarkan potensi dan kebutuhan strategis perusahaan.",
-      },
-      {
-        title: "End-to-End Talent Solutions",
-        desc: "Solusi pengelolaan talenta menyeluruh dari sourcing hingga succession planning.",
-      },
-      {
-        title: "Performance Alignment",
-        desc: "Menyelaraskan kontribusi individu dan tim dengan target bisnis perusahaan.",
-      },
-    ],
-  },
-  {
-    slug: "solution",
-    title: "Solution",
-    tagline: "Teknologi & digital terintegrasi",
-    short:
-      "Solusi teknologi dan digital terintegrasi untuk mendukung transformasi bisnis yang scalable.",
-    capabilities: [
-      "Artificial Intelligence",
-      "Software & Digital Products",
-      "Data & Analytics",
-      "Security & Platform Engineering",
-      "Cloud & Infrastructure",
-      "Procurement",
-    ],
-    opening: [
-      "BARIS menghadirkan solusi teknologi dan digital untuk membantu perusahaan meningkatkan efisiensi operasional.",
-      "Mulai dari AI hingga cloud infrastructure, kami membantu organisasi membangun fondasi digital yang aman dan scalable.",
-    ],
-    details: [
-      {
-        title: "Artificial Intelligence",
-        desc: "Strategi dan implementasi AI untuk meningkatkan efisiensi dan mendukung pengambilan keputusan.",
-      },
-      {
-        title: "Software & Digital Products",
-        desc: "Pengembangan software dan aplikasi digital yang scalable dan modern.",
-      },
-      {
-        title: "Data & Analytics",
-        desc: "Mengubah data menjadi insight strategis melalui dashboard dan KPI monitoring.",
-      },
-      {
-        title: "Security & Platform Engineering",
-        desc: "Membangun arsitektur sistem yang aman dan scalable.",
-      },
-      {
-        title: "Cloud & Infrastructure",
-        desc: "Solusi cloud dan infrastruktur modern yang fleksibel dan reliable.",
-      },
-      {
-        title: "Procurement",
-        desc: "Layanan pengadaan strategis untuk mendukung efisiensi operasional.",
-      },
-    ],
-  },
-];
+const DEFAULT_CONTENT: SiteContent = {
+  services: [
+    {
+      slug: "culture-transformation",
+      title: "Culture Transformation",
+      tagline: "Budaya inovasi & pertumbuhan",
+      short:
+        "Membangun budaya inovasi yang mendorong organisasi bertumbuh, beradaptasi, dan terus berkembang.",
+      capabilities: [
+        "Innovation Workshop",
+        "In-house Innovation Lab",
+        "Training & Certification",
+        "Corporate Event & Activation",
+      ],
+      opening: [
+        "Culture Transformation membantu perusahaan membangun budaya kerja yang lebih adaptif, kolaboratif, dan inovatif.",
+        "Melalui pendekatan strategis dan implementatif, BARIS mendampingi organisasi dalam menciptakan perubahan budaya secara nyata.",
+      ],
+      details: [
+        {
+          title: "Innovation Workshop",
+          desc: "Fasilitasi workshop inovasi untuk membantu tim mengidentifikasi tantangan bisnis dan menghasilkan solusi yang actionable.",
+        },
+        {
+          title: "In-house Innovation Lab",
+          desc: "Membangun ekosistem inovasi internal sebagai wadah pengembangan ide dan percepatan inovasi.",
+        },
+        {
+          title: "Training & Certification",
+          desc: "Program pengembangan kompetensi untuk mendukung transformasi organisasi.",
+        },
+        {
+          title: "Corporate Event & Activation",
+          desc: "Perencanaan event korporasi yang memperkuat engagement dan budaya perusahaan.",
+        },
+      ],
+    },
+    {
+      slug: "talent",
+      title: "Talent",
+      tagline: "Pengembangan & penyelarasan talenta",
+      short:
+        "Membantu perusahaan mengembangkan dan menyelaraskan talenta untuk mendukung transformasi bisnis.",
+      capabilities: [
+        "Talent Scouting & Mapping",
+        "End-to-End Talent Solutions",
+        "Performance Alignment",
+      ],
+      opening: [
+        "Talent BARIS menghadirkan solusi pengelolaan talenta secara end-to-end.",
+        "Mulai dari talent mapping hingga performance alignment, kami membantu memastikan setiap talenta berkembang selaras strategi perusahaan.",
+      ],
+      details: [
+        {
+          title: "Talent Scouting & Mapping",
+          desc: "Identifikasi dan pemetaan talenta berdasarkan potensi dan kebutuhan strategis perusahaan.",
+        },
+        {
+          title: "End-to-End Talent Solutions",
+          desc: "Solusi pengelolaan talenta menyeluruh dari sourcing hingga succession planning.",
+        },
+        {
+          title: "Performance Alignment",
+          desc: "Menyelaraskan kontribusi individu dan tim dengan target bisnis perusahaan.",
+        },
+      ],
+    },
+    {
+      slug: "solution",
+      title: "Solution",
+      tagline: "Teknologi & digital terintegrasi",
+      short:
+        "Solusi teknologi dan digital terintegrasi untuk mendukung transformasi bisnis yang scalable.",
+      capabilities: [
+        "Artificial Intelligence",
+        "Software & Digital Products",
+        "Data & Analytics",
+        "Security & Platform Engineering",
+        "Cloud & Infrastructure",
+        "Procurement",
+      ],
+      opening: [
+        "BARIS menghadirkan solusi teknologi dan digital untuk membantu perusahaan meningkatkan efisiensi operasional.",
+        "Mulai dari AI hingga cloud infrastructure, kami membantu organisasi membangun fondasi digital yang aman dan scalable.",
+      ],
+      details: [
+        {
+          title: "Artificial Intelligence",
+          desc: "Strategi dan implementasi AI untuk meningkatkan efisiensi dan mendukung pengambilan keputusan.",
+        },
+        {
+          title: "Software & Digital Products",
+          desc: "Pengembangan software dan aplikasi digital yang scalable dan modern.",
+        },
+        {
+          title: "Data & Analytics",
+          desc: "Mengubah data menjadi insight strategis melalui dashboard dan KPI monitoring.",
+        },
+        {
+          title: "Security & Platform Engineering",
+          desc: "Membangun arsitektur sistem yang aman dan scalable.",
+        },
+        {
+          title: "Cloud & Infrastructure",
+          desc: "Solusi cloud dan infrastruktur modern yang fleksibel dan reliable.",
+        },
+        {
+          title: "Procurement",
+          desc: "Layanan pengadaan strategis untuk mendukung efisiensi operasional.",
+        },
+      ],
+    },
+  ],
+  stories: [
+    {
+      slug: "metranet-platform",
+      client: "Metranet",
+      industry: "Telekomunikasi",
+      project: "Platform B2B Cloud-Native",
+      highlight: "Efisiensi operasional naik 38% dan rilis produk 2x lebih cepat.",
+      challenge:
+        "Memerlukan platform digital terintegrasi untuk mempercepat penetrasi layanan B2B di pasar nasional.",
+      solution:
+        "BARIS membangun platform berbasis cloud-native dengan arsitektur modular dan integrasi sistem internal Metranet.",
+      impact:
+        "Peningkatan efisiensi operasional 38% dan akselerasi go-to-market produk baru hingga 2x lebih cepat.",
+      metrics: [
+        { v: "+38%", l: "Efisiensi operasional" },
+        { v: "2x", l: "Kecepatan rilis produk" },
+        { v: "99.9%", l: "Uptime layanan" },
+      ],
+    },
+    {
+      slug: "transformasi-bumn",
+      client: "BUMN Energi",
+      industry: "Energi & Sumber Daya",
+      project: "Transformasi Digital End-to-End",
+      highlight: "Waktu proses inti turun 45% dengan dampak efisiensi signifikan.",
+      challenge:
+        "Transformasi proses bisnis konvensional menjadi digital-first dengan dampak terukur.",
+      solution:
+        "Pendampingan advisory selama 9 bulan, perancangan blueprint digital, serta implementasi sistem terintegrasi.",
+      impact:
+        "Pengurangan waktu proses inti hingga 45% dan penghematan biaya operasional signifikan.",
+      metrics: [
+        { v: "-45%", l: "Waktu proses" },
+        { v: "+27%", l: "Produktivitas" },
+        { v: "9 bln", l: "Durasi proyek" },
+      ],
+    },
+    {
+      slug: "konferensi-nasional",
+      client: "Asosiasi Industri",
+      industry: "Event & Komunitas",
+      project: "Konferensi Nasional Hybrid",
+      highlight: "5.000+ peserta hybrid dengan NPS 78 dan liputan media nasional.",
+      challenge: "Menyelenggarakan konferensi nasional hybrid skala besar dengan standar premium.",
+      solution:
+        "End-to-end event management dari konsep, branding, produksi panggung, hingga platform hybrid.",
+      impact: "5.000+ peserta hybrid, NPS 78, dan liputan media nasional yang luas.",
+      metrics: [
+        { v: "5K+", l: "Peserta hybrid" },
+        { v: "78", l: "NPS Score" },
+        { v: "30+", l: "Liputan media" },
+      ],
+    },
+  ],
+  insights: [
+    {
+      title: "Lima Pilar Transformasi Digital di Era AI",
+      category: "Strategi",
+      read: "6 menit",
+      excerpt: "Bagaimana perusahaan dapat menyusun roadmap transformasi yang adaptif dan terukur.",
+    },
+    {
+      title: "Membangun Tim Produk Berperforma Tinggi",
+      category: "Organisasi",
+      read: "5 menit",
+      excerpt: "Praktik terbaik membangun cross-functional team yang fokus pada outcome.",
+    },
+    {
+      title: "Pengadaan Strategis: Beyond Cost Saving",
+      category: "Procurement",
+      read: "4 menit",
+      excerpt:
+        "Mengapa procurement modern adalah pendorong nilai bisnis, bukan sekadar fungsi pendukung.",
+    },
+  ],
+  clients: [
+    "Metranet",
+    "Telkom Group",
+    "BUMN Partner",
+    "Astra Mitra",
+    "Pertamina Lab",
+    "Bank Nusantara",
+    "Indosat Hub",
+    "Garuda Tech",
+  ],
+};
 
-const INITIAL_STORIES: SuccessStory[] = [
-  {
-    slug: "metranet-platform",
-    client: "Metranet",
-    industry: "Telekomunikasi",
-    project: "Platform B2B Cloud-Native",
-    highlight: "Efisiensi operasional naik 38% dan rilis produk 2x lebih cepat.",
-    challenge:
-      "Memerlukan platform digital terintegrasi untuk mempercepat penetrasi layanan B2B di pasar nasional.",
-    solution:
-      "BARIS membangun platform berbasis cloud-native dengan arsitektur modular dan integrasi sistem internal Metranet.",
-    impact:
-      "Peningkatan efisiensi operasional 38% dan akselerasi go-to-market produk baru hingga 2x lebih cepat.",
-    metrics: [
-      { v: "+38%", l: "Efisiensi operasional" },
-      { v: "2x", l: "Kecepatan rilis produk" },
-      { v: "99.9%", l: "Uptime layanan" },
-    ],
-  },
-  {
-    slug: "transformasi-bumn",
-    client: "BUMN Energi",
-    industry: "Energi & Sumber Daya",
-    project: "Transformasi Digital End-to-End",
-    highlight: "Waktu proses inti turun 45% dengan dampak efisiensi signifikan.",
-    challenge:
-      "Transformasi proses bisnis konvensional menjadi digital-first dengan dampak terukur.",
-    solution:
-      "Pendampingan advisory selama 9 bulan, perancangan blueprint digital, serta implementasi sistem terintegrasi.",
-    impact:
-      "Pengurangan waktu proses inti hingga 45% dan penghematan biaya operasional signifikan.",
-    metrics: [
-      { v: "-45%", l: "Waktu proses" },
-      { v: "+27%", l: "Produktivitas" },
-      { v: "9 bln", l: "Durasi proyek" },
-    ],
-  },
-  {
-    slug: "konferensi-nasional",
-    client: "Asosiasi Industri",
-    industry: "Event & Komunitas",
-    project: "Konferensi Nasional Hybrid",
-    highlight: "5.000+ peserta hybrid dengan NPS 78 dan liputan media nasional.",
-    challenge: "Menyelenggarakan konferensi nasional hybrid skala besar dengan standar premium.",
-    solution:
-      "End-to-end event management dari konsep, branding, produksi panggung, hingga platform hybrid.",
-    impact: "5.000+ peserta hybrid, NPS 78, dan liputan media nasional yang luas.",
-    metrics: [
-      { v: "5K+", l: "Peserta hybrid" },
-      { v: "78", l: "NPS Score" },
-      { v: "30+", l: "Liputan media" },
-    ],
-  },
-];
+// ── KV API ─────────────────────────────────────────────────────────────────
+async function loadContent(): Promise<SiteContent> {
+  try {
+    const res = await fetch("/api/content?key=siteContent");
+    const data = await res.json();
+    return data || DEFAULT_CONTENT;
+  } catch {
+    return DEFAULT_CONTENT;
+  }
+}
 
-const INITIAL_INSIGHTS: Insight[] = [
-  {
-    title: "Lima Pilar Transformasi Digital di Era AI",
-    category: "Strategi",
-    read: "6 menit",
-    excerpt: "Bagaimana perusahaan dapat menyusun roadmap transformasi yang adaptif dan terukur.",
-  },
-  {
-    title: "Membangun Tim Produk Berperforma Tinggi",
-    category: "Organisasi",
-    read: "5 menit",
-    excerpt: "Praktik terbaik membangun cross-functional team yang fokus pada outcome.",
-  },
-  {
-    title: "Pengadaan Strategis: Beyond Cost Saving",
-    category: "Procurement",
-    read: "4 menit",
-    excerpt:
-      "Mengapa procurement modern adalah pendorong nilai bisnis, bukan sekadar fungsi pendukung.",
-  },
-];
-
-const INITIAL_CLIENTS = [
-  "Metranet",
-  "Telkom Group",
-  "BUMN Partner",
-  "Astra Mitra",
-  "Pertamina Lab",
-  "Bank Nusantara",
-  "Indosat Hub",
-  "Garuda Tech",
-];
+async function saveContent(content: SiteContent): Promise<boolean> {
+  try {
+    const res = await fetch("/api/content?key=siteContent", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(content),
+    });
+    const data = await res.json();
+    return data.success;
+  } catch {
+    return false;
+  }
+}
 
 // ── Login Screen ───────────────────────────────────────────────────────────
 function LoginScreen({ onLogin }: { onLogin: () => void }) {
@@ -318,7 +349,6 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
               outline: "none",
               boxSizing: "border-box",
               fontFamily: "inherit",
-              transition: "border-color 0.2s",
             }}
             onFocus={(e) => (e.target.style.borderColor = "#0a5950")}
             onBlur={(e) => (e.target.style.borderColor = "#e5e7eb")}
@@ -387,10 +417,7 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
             fontWeight: "700",
             cursor: "pointer",
             fontFamily: "inherit",
-            transition: "opacity 0.2s",
           }}
-          onMouseEnter={(e) => ((e.target as HTMLButtonElement).style.opacity = "0.9")}
-          onMouseLeave={(e) => ((e.target as HTMLButtonElement).style.opacity = "1")}
         >
           Masuk
         </button>
@@ -431,7 +458,6 @@ function Sidebar({
         fontFamily: "'Montserrat', sans-serif",
       }}
     >
-      {/* Logo */}
       <div style={{ padding: "24px 20px 20px", borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <div
@@ -458,7 +484,6 @@ function Sidebar({
         </div>
       </div>
 
-      {/* Nav */}
       <div style={{ flex: 1, padding: "16px 12px" }}>
         {NAV.map((n) => (
           <button
@@ -480,7 +505,6 @@ function Sidebar({
               fontWeight: active === n.id ? "700" : "500",
               textAlign: "left",
               fontFamily: "inherit",
-              transition: "all 0.15s",
             }}
             onMouseEnter={(e) => {
               if (active !== n.id)
@@ -497,7 +521,6 @@ function Sidebar({
         ))}
       </div>
 
-      {/* Logout */}
       <div style={{ padding: "16px 12px", borderTop: "1px solid rgba(255,255,255,0.1)" }}>
         <button
           onClick={onLogout}
@@ -614,11 +637,13 @@ function Btn({
   onClick,
   variant = "primary",
   small = false,
+  loading = false,
 }: {
   children: React.ReactNode;
   onClick: () => void;
   variant?: "primary" | "danger" | "ghost";
   small?: boolean;
+  loading?: boolean;
 }) {
   const styles: Record<string, React.CSSProperties> = {
     primary: {
@@ -632,17 +657,19 @@ function Btn({
   return (
     <button
       onClick={onClick}
+      disabled={loading}
       style={{
         ...styles[variant],
         padding: small ? "6px 12px" : "10px 20px",
         borderRadius: "8px",
-        cursor: "pointer",
+        cursor: loading ? "not-allowed" : "pointer",
         fontSize: small ? "12px" : "14px",
         fontWeight: "600",
         fontFamily: "inherit",
+        opacity: loading ? 0.7 : 1,
       }}
     >
-      {children}
+      {loading ? "Menyimpan..." : children}
     </button>
   );
 }
@@ -678,19 +705,58 @@ function SectionHeader({
   );
 }
 
+// ── Save Bar ───────────────────────────────────────────────────────────────
+function SaveBar({
+  onSave,
+  loading,
+  saved,
+}: {
+  onSave: () => void;
+  loading: boolean;
+  saved: boolean;
+}) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "flex-end",
+        gap: "12px",
+        marginTop: "8px",
+        alignItems: "center",
+      }}
+    >
+      {saved && (
+        <span style={{ color: "#0a5950", fontSize: "14px", fontWeight: "600" }}>
+          ✓ Tersimpan ke database!
+        </span>
+      )}
+      <Btn onClick={onSave} loading={loading}>
+        Simpan Perubahan
+      </Btn>
+    </div>
+  );
+}
+
 // ── Services Tab ───────────────────────────────────────────────────────────
-function ServicesTab() {
-  const [services, setServices] = useState<Service[]>(INITIAL_SERVICES);
+function ServicesTab({
+  content,
+  setContent,
+  onSave,
+  saving,
+  saved,
+}: {
+  content: SiteContent;
+  setContent: (c: SiteContent) => void;
+  onSave: () => void;
+  saving: boolean;
+  saved: boolean;
+}) {
   const [editing, setEditing] = useState<number | null>(null);
-  const [saved, setSaved] = useState(false);
+  const services = content.services;
 
   const update = (i: number, field: keyof Service, value: unknown) => {
-    setServices((s) => s.map((svc, idx) => (idx === i ? { ...svc, [field]: value } : svc)));
-  };
-
-  const saveAll = () => {
-    setSaved(true);
-    setTimeout(() => setSaved(false), 3000);
+    const updated = services.map((svc, idx) => (idx === i ? { ...svc, [field]: value } : svc));
+    setContent({ ...content, services: updated });
   };
 
   return (
@@ -875,46 +941,51 @@ function ServicesTab() {
           )}
         </Card>
       ))}
-
-      <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px", marginTop: "8px" }}>
-        {saved && (
-          <span
-            style={{ color: "#0a5950", fontSize: "14px", fontWeight: "600", alignSelf: "center" }}
-          >
-            ✓ Tersimpan!
-          </span>
-        )}
-        <Btn onClick={saveAll}>Simpan Perubahan</Btn>
-      </div>
+      <SaveBar onSave={onSave} loading={saving} saved={saved} />
     </div>
   );
 }
 
 // ── Success Stories Tab ────────────────────────────────────────────────────
-function StoriesTab() {
-  const [stories, setStories] = useState<SuccessStory[]>(INITIAL_STORIES);
+function StoriesTab({
+  content,
+  setContent,
+  onSave,
+  saving,
+  saved,
+}: {
+  content: SiteContent;
+  setContent: (c: SiteContent) => void;
+  onSave: () => void;
+  saving: boolean;
+  saved: boolean;
+}) {
   const [editing, setEditing] = useState<number | null>(null);
-  const [saved, setSaved] = useState(false);
+  const stories = content.stories;
 
   const update = (i: number, field: keyof SuccessStory, value: unknown) => {
-    setStories((s) => s.map((st, idx) => (idx === i ? { ...st, [field]: value } : st)));
+    const updated = stories.map((st, idx) => (idx === i ? { ...st, [field]: value } : st));
+    setContent({ ...content, stories: updated });
   };
 
   const addStory = () => {
-    setStories((s) => [
-      ...s,
-      {
-        slug: `story-${Date.now()}`,
-        client: "Nama Klien",
-        industry: "Industri",
-        project: "Nama Proyek",
-        highlight: "Highlight utama proyek.",
-        challenge: "Deskripsi tantangan.",
-        solution: "Deskripsi solusi.",
-        impact: "Deskripsi dampak.",
-        metrics: [{ v: "0%", l: "Label" }],
-      },
-    ]);
+    setContent({
+      ...content,
+      stories: [
+        ...stories,
+        {
+          slug: `story-${Date.now()}`,
+          client: "Nama Klien",
+          industry: "Industri",
+          project: "Nama Proyek",
+          highlight: "Highlight utama proyek.",
+          challenge: "Deskripsi tantangan.",
+          solution: "Deskripsi solusi.",
+          impact: "Deskripsi dampak.",
+          metrics: [{ v: "0%", l: "Label" }],
+        },
+      ],
+    });
     setEditing(stories.length);
   };
 
@@ -949,7 +1020,9 @@ function StoriesTab() {
               <Btn
                 small
                 variant="danger"
-                onClick={() => setStories((s) => s.filter((_, j) => j !== i))}
+                onClick={() =>
+                  setContent({ ...content, stories: stories.filter((_, j) => j !== i) })
+                }
               >
                 Hapus
               </Btn>
@@ -1087,48 +1160,46 @@ function StoriesTab() {
           )}
         </Card>
       ))}
-
-      <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px", marginTop: "8px" }}>
-        {saved && (
-          <span
-            style={{ color: "#0a5950", fontSize: "14px", fontWeight: "600", alignSelf: "center" }}
-          >
-            ✓ Tersimpan!
-          </span>
-        )}
-        <Btn
-          onClick={() => {
-            setSaved(true);
-            setTimeout(() => setSaved(false), 3000);
-          }}
-        >
-          Simpan Perubahan
-        </Btn>
-      </div>
+      <SaveBar onSave={onSave} loading={saving} saved={saved} />
     </div>
   );
 }
 
 // ── Insights Tab ───────────────────────────────────────────────────────────
-function InsightsTab() {
-  const [insights, setInsights] = useState<Insight[]>(INITIAL_INSIGHTS);
+function InsightsTab({
+  content,
+  setContent,
+  onSave,
+  saving,
+  saved,
+}: {
+  content: SiteContent;
+  setContent: (c: SiteContent) => void;
+  onSave: () => void;
+  saving: boolean;
+  saved: boolean;
+}) {
   const [editing, setEditing] = useState<number | null>(null);
-  const [saved, setSaved] = useState(false);
+  const insights = content.insights;
 
   const update = (i: number, field: keyof Insight, value: string) => {
-    setInsights((s) => s.map((ins, idx) => (idx === i ? { ...ins, [field]: value } : ins)));
+    const updated = insights.map((ins, idx) => (idx === i ? { ...ins, [field]: value } : ins));
+    setContent({ ...content, insights: updated });
   };
 
   const addInsight = () => {
-    setInsights((s) => [
-      ...s,
-      {
-        title: "Judul Artikel",
-        category: "Kategori",
-        read: "5 menit",
-        excerpt: "Deskripsi singkat artikel.",
-      },
-    ]);
+    setContent({
+      ...content,
+      insights: [
+        ...insights,
+        {
+          title: "Judul Artikel",
+          category: "Kategori",
+          read: "5 menit",
+          excerpt: "Deskripsi singkat artikel.",
+        },
+      ],
+    });
     setEditing(insights.length);
   };
 
@@ -1177,7 +1248,9 @@ function InsightsTab() {
               <Btn
                 small
                 variant="danger"
-                onClick={() => setInsights((s) => s.filter((_, j) => j !== i))}
+                onClick={() =>
+                  setContent({ ...content, insights: insights.filter((_, j) => j !== i) })
+                }
               >
                 Hapus
               </Btn>
@@ -1210,33 +1283,27 @@ function InsightsTab() {
           )}
         </Card>
       ))}
-
-      <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px", marginTop: "8px" }}>
-        {saved && (
-          <span
-            style={{ color: "#0a5950", fontSize: "14px", fontWeight: "600", alignSelf: "center" }}
-          >
-            ✓ Tersimpan!
-          </span>
-        )}
-        <Btn
-          onClick={() => {
-            setSaved(true);
-            setTimeout(() => setSaved(false), 3000);
-          }}
-        >
-          Simpan Perubahan
-        </Btn>
-      </div>
+      <SaveBar onSave={onSave} loading={saving} saved={saved} />
     </div>
   );
 }
 
 // ── Clients Tab ────────────────────────────────────────────────────────────
-function ClientsTab() {
-  const [clients, setClients] = useState<string[]>(INITIAL_CLIENTS);
+function ClientsTab({
+  content,
+  setContent,
+  onSave,
+  saving,
+  saved,
+}: {
+  content: SiteContent;
+  setContent: (c: SiteContent) => void;
+  onSave: () => void;
+  saving: boolean;
+  saved: boolean;
+}) {
   const [newClient, setNewClient] = useState("");
-  const [saved, setSaved] = useState(false);
+  const clients = content.clients;
 
   return (
     <div>
@@ -1258,7 +1325,9 @@ function ClientsTab() {
             >
               <span style={{ color: "#0a5950", fontWeight: "600", fontSize: "14px" }}>{c}</span>
               <button
-                onClick={() => setClients((s) => s.filter((_, j) => j !== i))}
+                onClick={() =>
+                  setContent({ ...content, clients: clients.filter((_, j) => j !== i) })
+                }
                 style={{
                   background: "none",
                   border: "none",
@@ -1274,14 +1343,13 @@ function ClientsTab() {
             </div>
           ))}
         </div>
-
         <div style={{ display: "flex", gap: "10px" }}>
           <input
             value={newClient}
             onChange={(e) => setNewClient(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter" && newClient.trim()) {
-                setClients((s) => [...s, newClient.trim()]);
+                setContent({ ...content, clients: [...clients, newClient.trim()] });
                 setNewClient("");
               }
             }}
@@ -1299,7 +1367,7 @@ function ClientsTab() {
           <Btn
             onClick={() => {
               if (newClient.trim()) {
-                setClients((s) => [...s, newClient.trim()]);
+                setContent({ ...content, clients: [...clients, newClient.trim()] });
                 setNewClient("");
               }
             }}
@@ -1308,34 +1376,63 @@ function ClientsTab() {
           </Btn>
         </div>
       </Card>
-
-      <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px" }}>
-        {saved && (
-          <span
-            style={{ color: "#0a5950", fontSize: "14px", fontWeight: "600", alignSelf: "center" }}
-          >
-            ✓ Tersimpan!
-          </span>
-        )}
-        <Btn
-          onClick={() => {
-            setSaved(true);
-            setTimeout(() => setSaved(false), 3000);
-          }}
-        >
-          Simpan Perubahan
-        </Btn>
-      </div>
+      <SaveBar onSave={onSave} loading={saving} saved={saved} />
     </div>
   );
 }
 
 // ── Main App ───────────────────────────────────────────────────────────────
-export default function AdminPanel() {
+function AdminPanel() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [tab, setTab] = useState("services");
+  const [content, setContent] = useState<SiteContent>(DEFAULT_CONTENT);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (loggedIn) {
+      setLoading(true);
+      loadContent().then((data) => {
+        setContent(data);
+        setLoading(false);
+      });
+    }
+  }, [loggedIn]);
+
+  const handleSave = async () => {
+    setSaving(true);
+    const ok = await saveContent(content);
+    setSaving(false);
+    if (ok) {
+      setSaved(true);
+      setTimeout(() => setSaved(false), 3000);
+    } else {
+      alert("Gagal menyimpan. Coba lagi.");
+    }
+  };
 
   if (!loggedIn) return <LoginScreen onLogin={() => setLoggedIn(true)} />;
+
+  if (loading)
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontFamily: "'Montserrat', sans-serif",
+        }}
+      >
+        <div style={{ textAlign: "center" }}>
+          <div style={{ fontSize: "32px", marginBottom: "16px" }}>⏳</div>
+          <p style={{ color: "#6b7280" }}>Memuat konten...</p>
+        </div>
+      </div>
+    );
+
+  const tabProps = { content, setContent, onSave: handleSave, saving, saved };
 
   return (
     <div
@@ -1348,10 +1445,10 @@ export default function AdminPanel() {
     >
       <Sidebar active={tab} onNav={setTab} onLogout={() => setLoggedIn(false)} />
       <div style={{ marginLeft: "240px", flex: 1, padding: "32px", maxWidth: "900px" }}>
-        {tab === "services" && <ServicesTab />}
-        {tab === "stories" && <StoriesTab />}
-        {tab === "insights" && <InsightsTab />}
-        {tab === "clients" && <ClientsTab />}
+        {tab === "services" && <ServicesTab {...tabProps} />}
+        {tab === "stories" && <StoriesTab {...tabProps} />}
+        {tab === "insights" && <InsightsTab {...tabProps} />}
+        {tab === "clients" && <ClientsTab {...tabProps} />}
       </div>
     </div>
   );
