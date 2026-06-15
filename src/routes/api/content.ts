@@ -1,8 +1,8 @@
-import { createServerFileRoute } from "@tanstack/react-start/server";
+import { createAPIFileRoute } from "@tanstack/react-start/api";
 
-export const ServerRoute = createServerFileRoute("/api/content").methods({
+export const APIRoute = createAPIFileRoute("/api/content")({
   GET: async ({ request }) => {
-    const env = (request as unknown as { env: { CONTENT: KVNamespace } }).env;
+    const env = (request as any).env as { CONTENT: { get: (k: string) => Promise<string | null> } };
     const key = new URL(request.url).searchParams.get("key") || "siteContent";
     try {
       const data = await env.CONTENT.get(key);
@@ -10,13 +10,13 @@ export const ServerRoute = createServerFileRoute("/api/content").methods({
         headers: { "content-type": "application/json" },
       });
     } catch {
-      return new Response("null", {
-        headers: { "content-type": "application/json" },
-      });
+      return new Response("null", { headers: { "content-type": "application/json" } });
     }
   },
   POST: async ({ request }) => {
-    const env = (request as unknown as { env: { CONTENT: KVNamespace } }).env;
+    const env = (request as any).env as {
+      CONTENT: { put: (k: string, v: string) => Promise<void> };
+    };
     const key = new URL(request.url).searchParams.get("key") || "siteContent";
     try {
       const body = await request.text();
@@ -32,8 +32,3 @@ export const ServerRoute = createServerFileRoute("/api/content").methods({
     }
   },
 });
-
-type KVNamespace = {
-  get(key: string): Promise<string | null>;
-  put(key: string, value: string): Promise<void>;
-};
